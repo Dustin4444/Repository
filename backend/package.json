@@ -32,8 +32,9 @@
     "start-production": "node --max-old-space-size=16384 dist/index.js",
     "reindex-updated-pools": "npm run start-production --update-pools",
     "reindex-all-blocks": "npm run start-production --update-pools --reindex-blocks",
-    "test": "./node_modules/.bin/jest --coverage",
-    "test:ci": "CI=true ./node_modules/.bin/jest --coverage",
+    "test": "./node_modules/.bin/jest --coverage && ./node_modules/.bin/vitest run",
+    "test:ci": "CI=true ./node_modules/.bin/jest --coverage && ./node_modules/.bin/vitest run",
+    "test:vitest": "./node_modules/.bin/vitest run",
     "test:integration": "./node_modules/.bin/jest --config=jest.integration.config.ts --runInBand --forceExit",
     "test:with-db": "bash ./scripts/test-with-db.sh",
     "lint": "./node_modules/.bin/eslint . --ext .ts",
@@ -49,8 +50,8 @@
     "express": "~4.22.1",
     "maxmind": "~4.3.11",
     "mysql2": "~3.18.2",
-    "rust-gbt": "file:./rust-gbt",
     "redis": "^4.7.0",
+    "rust-gbt": "file:./rust-gbt",
     "socks-proxy-agent": "~7.0.0",
     "typescript": "~4.9.3",
     "ws": "~8.19.0"
@@ -69,7 +70,8 @@
     "jest": "^30.0.0",
     "prettier": "^3.0.0",
     "ts-jest": "^29.4.5",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "vitest": "^3.2.4"
   },
   "overrides": {
     "js-yaml": "^4.1.1",
