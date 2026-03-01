@@ -13,8 +13,13 @@ const config: Config.InitialOptions = {
       lines: 1
     }
   },
+  clearMocks: true,
+  restoreMocks: true,
   setupFiles: [
     './testSetup.ts',
+  ],
+  setupFilesAfterFramework: [
+    './testSetupAfterFramework.ts',
   ],
   testPathIgnorePatterns: [
     '/node_modules/',
