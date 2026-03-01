@@ -1,0 +1,7 @@
+{
+  "name": "rust-gbt",
+  "version": "3.0.1",
+  "description": "Mock stub for rust-gbt (used when native binary is not compiled)",
+  "main": "index.js",
+  "types": "index.d.ts"
+}

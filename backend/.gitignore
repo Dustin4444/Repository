@@ -56,4 +56,6 @@ Thumbs.db
 /package
 
 # Rust GBT folder (We build externally first)
-/rust-gbt
+# Allow the JS/TS stub so unit tests can run without compiling Rust
+/rust-gbt/*.node
+/rust-gbt/target
