@@ -19,6 +19,7 @@ const config: Config.InitialOptions = {
   testPathIgnorePatterns: [
     '/node_modules/',
     '/__integration_tests__/',
+    '\\.vitest\\.test\\.ts$',
   ],
 };
 export default config;
