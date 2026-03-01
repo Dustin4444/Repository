@@ -5,6 +5,7 @@ import bitcoinApi from './bitcoin/bitcoin-api-factory';
 import { IEsploraApi } from './bitcoin/esplora-api.interface';
 import { Common } from './common';
 import redisCache from './redis-cache';
+import { nowSeconds } from '../utils/timer-utils';
 
 export interface RbfTransaction extends TransactionStripped {
   rbf?: boolean;
@@ -130,7 +131,7 @@ class RbfCache {
     newTxExtended.replacement = true;
 
     const newTx = Common.stripTransaction(newTxExtended) as RbfTransaction;
-    const newTime = newTxExtended.firstSeen || (Date.now() / 1000);
+    const newTime = newTxExtended.firstSeen || nowSeconds();
     newTx.rbf = newTxExtended.vin.some((v) => v.sequence < 0xfffffffe);
     this.addTx(newTx.txid, newTxExtended);
 
@@ -161,7 +162,7 @@ class RbfCache {
           }
         }
       } else {
-        const replacedTime = replacedTxExtended.firstSeen || (Date.now() / 1000);
+        const replacedTime = replacedTxExtended.firstSeen || nowSeconds();
         replacedTrees.push({
           tx: replacedTx,
           time: replacedTime,
