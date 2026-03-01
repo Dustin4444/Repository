@@ -8,6 +8,36 @@ When submitting a pull request for the first time, please create a file with a n
 
 Also, please GPG-sign all your commits (`git config commit.gpgsign true`).
 
+## Vitest Cleanup Pattern
+
+Tests that use fake timers, mocked globals, or spies must clean up after themselves to avoid leaking state into subsequent tests and to stay CI-stable.
+
+A global `afterEach` hook in `backend/test/setup.ts` handles this automatically for every Vitest test suite.  The canonical cleanup sequence is:
+
+```typescript
+afterEach(async () => {
+  // 1. Flush pending fake timers (only when fake timers are active).
+  if (vi.isFakeTimers()) {
+    await vi.runOnlyPendingTimersAsync();
+    vi.useRealTimers();          // 2. Restore real timers.
+  }
+  vi.restoreAllMocks();          // 3. Restore spies & mocked implementations.
+  vi.unstubAllGlobals();         // 4. Undo vi.stubGlobal() calls.
+});
+```
+
+**Why this order matters**:
+- Flushing pending timers _before_ restoring real timers prevents unresolved callbacks from carrying over.
+- `runOnlyPendingTimersAsync()` is safer than `runAllTimersAsync()` because it won't loop infinitely if a timer re-schedules itself.
+- Restoring mocks _after_ timers ensures timer callbacks that reference mocked functions are resolved before those mocks disappear.
+
+New Vitest test files should follow the `*.vitest.test.ts` naming convention so they are picked up by `vitest.config.ts` and excluded from the Jest runner.  Run them with:
+
+```sh
+cd backend
+npm run test:vitest
+```
+
 # Contributor License Agreement
 
 Last Updated: January 25, 2022
