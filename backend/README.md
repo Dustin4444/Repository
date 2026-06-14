@@ -147,6 +147,29 @@ With the backend configured and running, proceed to set up the [Mempool frontend
 
 ## Development Tips
 
+### Running Unit Tests
+
+Unit tests use [Jest](https://jestjs.io/) with [ts-jest](https://kulshekhar.github.io/ts-jest/).
+
+**Prerequisites**: `npm install` (or `npm install --ignore-scripts` in environments without a Rust toolchain).
+
+```bash
+# Run the full unit-test suite with coverage (canonical CI command)
+npm test
+
+# Re-run only while developing (no coverage for speed)
+npm test -- --no-coverage --forceExit
+
+# Run a single test file
+npm test -- --testPathPatterns="kraken-api" --no-coverage --forceExit
+```
+
+> **Note on the Rust GBT test** (`src/__tests__/gbt/gbt-tests.ts`): this test
+> exercises the native Rust block-template algorithm and requires a compiled
+> `rust-gbt` binary (produced by the `preinstall` script during `npm ci`).
+> When the binary is absent the test is automatically skipped so the rest of
+> the suite can still pass.
+
 ### Set Up Backend Watchers
 
 The Mempool backend is static. TypeScript scripts are compiled into the `dist` folder and served through a Node.js web server. 
