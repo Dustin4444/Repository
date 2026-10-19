@@ -11,8 +11,17 @@ const vectorTxidMap: Map<string, number>  = new Map(testVector.map(x => [x[1], x
 // so that ties break the same way as in Core's implementation
 const vectorBuffer: Buffer = fs.readFileSync(path.join(__dirname, './', './test-data/test-buffer.bin'));
 
+// The GBT tests require the native Rust binary produced by `npm ci` (preinstall
+// step). When the binary is absent (local dev without a Rust toolchain) the mock
+// stub from __mocks__/rust-gbt.js is used instead and the test is skipped so
+// that the overall `npm test` run can still succeed.
+const hasCompiledBinary = fs.existsSync(
+  path.resolve(__dirname, '../../../rust-gbt/index.js')
+);
+const testOrSkip = hasCompiledBinary ? test : test.skip;
+
 describe('Rust GBT', () => {
-  test('should produce the same template as getBlockTemplate from Bitcoin Core', async () => {
+  testOrSkip('should produce the same template as getBlockTemplate from Bitcoin Core', async () => {
     const rustGbt = new GbtGenerator(4_000_000, 8);
     const { mempool, maxUid } = mempoolFromArrayBuffer(vectorBuffer.buffer);
     const result = await rustGbt.make(mempool, [], maxUid);
