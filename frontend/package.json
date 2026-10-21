@@ -62,7 +62,7 @@
     "@angular-devkit/build-angular": "^20.3.29",
     "@angular/animations": "^20.3.29",
     "@angular/cli": "^20.3.29",
-    "@angular/common": "^20.3.29",
+    "@angular/common": "^20.3.34",
     "@angular/compiler": "^20.3.29",
     "@angular/core": "^20.3.29",
     "@angular/forms": "^20.3.29",
